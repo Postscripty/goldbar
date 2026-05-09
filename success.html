@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order Confirmed — Postscripty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C4922A;
+    --gold-light: #E8B84B;
+    --gold-dim: rgba(196,146,42,0.18);
+    --bg: #0D0C0A;
+    --surface: #141310;
+    --surface-2: #1C1A16;
+    --border: rgba(196,146,42,0.2);
+    --border-subtle: rgba(255,255,255,0.07);
+    --text: #F0EDE6;
+    --text-muted: #8A8275;
+    --text-dim: #5A5550;
+    --error: #E05A4E;
+    --success: #5A9E6F;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    width: 100%;
+    padding: 2rem 2rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  main {
+    width: 100%;
+    max-width: 580px;
+    padding: 4rem 1.5rem 5rem;
+    text-align: center;
+  }
+
+  /* Checkmark */
+  .check-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+  }
+
+  .check-circle svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--gold);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 em { font-style: italic; color: var(--gold); }
+
+  .sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 440px;
+    margin: 0 auto 3rem;
+  }
+
+  /* Steps */
+  .steps {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 1.5rem;
+    text-align: left;
+    margin-bottom: 3rem;
+  }
+
+  .steps-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .step:last-child { margin-bottom: 0; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-top: 1px;
+  }
+
+  .step.done .step-num {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  .step-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .step.done .step-text { color: var(--text); }
+
+  /* Upload section */
+  .upload-letter {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: left;
+  }
+
+  .upload-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .upload-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-desc strong { color: var(--text); font-weight: 400; }
+
+  /* File input custom styling */
+  .file-drop {
+    border: 1px dashed rgba(196,146,42,0.35);
+    border-radius: 4px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .file-drop:hover, .file-drop.dragover {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .file-drop input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-drop-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--gold);
+  }
+
+  .file-drop-text {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .file-drop-text span { color: var(--gold); }
+
+  .file-name {
+    font-size: 0.8rem;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  /* Notes textarea */
+  textarea {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.6;
+    padding: 0.75rem 1rem;
+    resize: vertical;
+    outline: none;
+    min-height: 90px;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  textarea:focus { border-color: var(--gold); }
+  textarea::placeholder { color: var(--text-dim); }
+
+  /* Hidden fields label */
+  .hidden-field { display: none; }
+
+  .upload-btn {
+    width: 100%;
+    background: var(--gold);
+    border: none;
+    border-radius: 4px;
+    color: #0D0C0A;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+
+  .upload-btn:hover { background: var(--gold-light); }
+  .upload-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Success state */
+  .upload-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .upload-success p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .upload-success strong { color: var(--text); font-weight: 400; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Postscripty</div>
+</header>
+
+<main>
+  <div class="check-circle">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </div>
+
+  <h1>Order <em>confirmed.</em></h1>
+  <p class="sub">Your payment was received. You're one step away — upload your mailing list below and we'll get your letters into production.</p>
+
+  <!-- Progress steps -->
+  <div class="steps">
+    <div class="steps-label">Your order progress</div>
+    <div class="step done">
+      <div class="step-num">✓</div>
+      <div class="step-text">Payment received — you'll get a receipt from Stripe shortly.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Upload your mailing list below (name + address for each recipient).</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">We write every letter by hand and mail them — typically within 5–7 business days.</div>
+    </div>
+  </div>
+
+  <!-- Mailing list upload via Netlify Forms -->
+  <div class="upload-letter" id="upload-section">
+    <span class="upload-label">Upload your mailing list</span>
+    <p class="upload-desc">
+      <strong>Accepted formats:</strong> CSV or Excel (.xlsx). Include columns for first name, last name, and full mailing address. Not sure about the format? <strong>Reply to your Stripe receipt</strong> and we'll send you a template.
+    </p>
+
+    <!-- data-netlify="true" tells Netlify to handle this form and email you on submission -->
+    <form
+      name="mailing-list-upload"
+      method="POST"
+      enctype="multipart/form-data"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      id="upload-form"
+    >
+      <input type="hidden" name="form-name" value="mailing-list-upload" />
+      <input type="hidden" name="bot-field" class="hidden-field" />
+      <input type="hidden" name="customer_name" id="order-name" />
+      <input type="hidden" name="customer_email" id="order-email" />
+      <input type="hidden" name="customer_phone" id="order-phone" />
+      <input type="hidden" name="brokerage" id="order-brokerage" />
+      <input type="hidden" name="quantity" id="order-qty" />
+
+      <div class="file-drop" id="file-drop">
+        <input type="file" name="mailing_list" id="file-input" accept=".csv,.xlsx,.xls" required />
+        <div class="file-drop-icon">&#8679;</div>
+        <div class="file-drop-text">Drop your file here or <span>browse</span></div>
+      </div>
+
+      <div class="file-name" id="file-name"></div>
+
+      <textarea
+        name="notes"
+        placeholder="Anything we should know? (custom message, special instructions, preferred send date, etc.)"
+      ></textarea>
+
+      <button type="submit" class="upload-btn" id="upload-btn">Submit My Mailing List &rarr;</button>
+    </form>
+
+    <div class="upload-success" id="upload-success">
+      <div class="check-circle" style="width:48px;height:48px;margin-bottom:1rem;">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <p><strong>You're all set.</strong><br/>We've received your list and will get started soon. Questions? Reply to your Stripe receipt or email <strong>hello@postscripty.co</strong>.</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Restore contact info saved before Stripe redirect
+  try {
+    const order = JSON.parse(sessionStorage.getItem('ps_order') || '{}');
+    document.getElementById('order-name').value     = order.name     || '';
+    document.getElementById('order-email').value    = order.email    || '';
+    document.getElementById('order-phone').value    = order.phone    || '';
+    document.getElementById('order-brokerage').value = order.brokerage || '';
+    document.getElementById('order-qty').value      = order.qty      || '';
+    sessionStorage.removeItem('ps_order');
+  } catch(e) {}
+
+  // File input label
+  const fileInput = document.getElementById('file-input');
+  const fileNameEl = document.getElementById('file-name');
+  const fileDrop = document.getElementById('file-drop');
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) {
+      fileNameEl.textContent = '✓  ' + fileInput.files[0].name;
+      fileNameEl.style.display = 'block';
+    }
+  });
+
+  // Drag and drop visual
+  fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('dragover'); });
+  fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+  fileDrop.addEventListener('drop', e => {
+    e.preventDefault();
+    fileDrop.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) {
+      fileInput.files = e.dataTransfer.files;
+      fileNameEl.textContent = '✓  ' + e.dataTransfer.files[0].name;
+      fileNameEl.style.display = 'block';
+    }
+  });
+
+  // Form submission — show success state after
+  document.getElementById('upload-form').addEventListener('submit', function(e) {
+    const btn = document.getElementById('upload-btn');
+    btn.disabled = true;
+    btn.textContent = 'Uploading…';
+
+    // Let Netlify Forms handle the submission natively (no e.preventDefault)
+    // The page will reload to the Netlify success state, but we can also
+    // intercept with fetch if you want a smoother experience:
+
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('/', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(() => {
+      document.getElementById('upload-form').style.display = 'none';
+      document.getElementById('upload-success').style.display = 'block';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Try again — something went wrong';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Place Your Order — Postscripty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C4922A;
+    --gold-light: #E8B84B;
+    --gold-dim: rgba(196,146,42,0.18);
+    --bg: #0D0C0A;
+    --surface: #141310;
+    --surface-2: #1C1A16;
+    --border: rgba(196,146,42,0.2);
+    --border-subtle: rgba(255,255,255,0.07);
+    --text: #F0EDE6;
+    --text-muted: #8A8275;
+    --text-dim: #5A5550;
+    --error: #E05A4E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header */
+  header {
+    width: 100%;
+    padding: 2rem 2rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* Page layout */
+  main {
+    width: 100%;
+    max-width: 640px;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .page-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .page-heading em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .page-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  /* Section labels */
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    margin: 2.5rem 0;
+  }
+
+  /* Form fields */
+  .field-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .field-group.single { grid-template-columns: 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"] {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+    width: 100%;
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  input:focus {
+    border-color: var(--gold);
+    background: var(--surface-2);
+  }
+
+  input::placeholder { color: var(--text-dim); }
+
+  .field-error {
+    font-size: 0.72rem;
+    color: var(--error);
+    display: none;
+  }
+
+  .field.has-error input { border-color: var(--error); }
+  .field.has-error .field-error { display: block; }
+
+  /* Tier selector */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  .tier {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: default;
+    transition: border-color 0.15s;
+  }
+
+  .tier.active {
+    border-color: var(--gold);
+    background: var(--surface-2);
+  }
+
+  .tier-name {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .tier.active .tier-name { color: var(--gold); }
+
+  .tier-range {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .tier-rate {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+
+  .tier.active .tier-rate { color: var(--gold-light); }
+
+  .tier-unit {
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Quantity + price summary */
+  .qty-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .qty-field { flex: 0 0 auto; }
+
+  .qty-field input {
+    width: 140px;
+    font-size: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .price-summary {
+    flex: 1;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price-summary.hidden { opacity: 0.3; }
+
+  .summary-tier {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  .summary-rate {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .summary-total-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-align: right;
+    margin-bottom: 2px;
+  }
+
+  .summary-total {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--gold-light);
+    text-align: right;
+    line-height: 1;
+  }
+
+  .qty-hint {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .qty-hint.error { color: var(--error); }
+
+  /* What's included */
+  .includes-note {
+    background: var(--surface);
+    border-left: 2px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 1rem 1.25rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-top: 1rem;
+  }
+
+  .includes-note strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    margin-top: 2.5rem;
+    background: var(--gold);
+    border: none;
+    border-radius: 4px;
+    color: #0D0C0A;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    padding: 1.1rem 2rem;
+    text-transform: uppercase;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  .submit-btn:hover { background: var(--gold-light); }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .submit-btn.loading { opacity: 0.6; pointer-events: none; }
+
+  .submit-btn .btn-text { display: inline-block; }
+  .submit-btn .btn-loading { display: none; }
+  .submit-btn.loading .btn-text { display: none; }
+  .submit-btn.loading .btn-loading { display: inline-block; }
+
+  .trust-line {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* API error banner */
+  .api-error {
+    display: none;
+    background: rgba(224,90,78,0.1);
+    border: 1px solid rgba(224,90,78,0.3);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    color: #E05A4E;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .field-group { grid-template-columns: 1fr; }
+    .tiers { grid-template-columns: repeat(3, 1fr); }
+    .qty-row { flex-direction: column; align-items: stretch; }
+    .qty-field input { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Postscripty</div>
+</header>
+
+<main>
+  <h1 class="page-heading">Place your <em>order.</em></h1>
+  <p class="page-sub">Every letter is handwritten by a real person. Enter your details below and we'll handle the rest — your letters ship within 5–7 business days of receiving your list.</p>
+
+  <form id="order-form" novalidate>
+
+    <!-- Contact Info -->
+    <div class="section-label">Your information</div>
+
+    <div class="field-group">
+      <div class="field" id="field-name">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" />
+        <span class="field-error">Required</span>
+      </div>
+      <div class="field" id="field-email">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="jane@realty.com" autocomplete="email" />
+        <span class="field-error">Valid email required</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="field" id="field-phone">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" placeholder="(702) 555-0100" autocomplete="tel" />
+        <span class="field-error">Required</span>
+      </div>
+      <div class="field" id="field-brokerage">
+        <label for="brokerage">Brokerage / Company</label>
+        <input type="text" id="brokerage" name="brokerage" placeholder="Compass, eXp, etc." />
+        <span class="field-error">Required</span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Quantity + Pricing -->
+    <div class="section-label">How many letters?</div>
+
+    <div class="tiers" id="tier-display">
+      <div class="tier" data-min="100" data-max="249" data-rate="3.00" data-name="Starter">
+        <div class="tier-name">Starter</div>
+        <div class="tier-range">100–249</div>
+        <div class="tier-rate">$3.00</div>
+        <div class="tier-unit">per letter</div>
+      </div>
+      <div class="tier" data-min="250" data-max="499" data-rate="2.79" data-name="Growth">
+        <div class="tier-name">Growth</div>
+        <div class="tier-range">250–499</div>
+        <div class="tier-rate">$2.79</div>
+        <div class="tier-unit">per letter</div>
+      </div>
+      <div class="tier" data-min="500" data-max="799" data-rate="2.69" data-name="Pro">
+        <div class="tier-name">Pro</div>
+        <div class="tier-range">500–799</div>
+        <div class="tier-rate">$2.69</div>
+        <div class="tier-unit">per letter</div>
+      </div>
+      <div class="tier" data-min="800" data-max="999" data-rate="2.49" data-name="Goldbar">
+        <div class="tier-name">Goldbar</div>
+        <div class="tier-range">800–999</div>
+        <div class="tier-rate">$2.49</div>
+        <div class="tier-unit">per letter</div>
+      </div>
+      <div class="tier" data-min="1000" data-max="999999" data-rate="2.33" data-name="All In">
+        <div class="tier-name">All In</div>
+        <div class="tier-range">1,000+</div>
+        <div class="tier-rate">$2.33</div>
+        <div class="tier-unit">per letter</div>
+      </div>
+    </div>
+
+    <div class="qty-row">
+      <div class="qty-field field" id="field-quantity">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" placeholder="250" min="100" step="1" />
+      </div>
+      <div class="price-summary hidden" id="price-summary">
+        <div>
+          <div class="summary-tier" id="sum-tier">—</div>
+          <div class="summary-rate" id="sum-rate">— per letter</div>
+        </div>
+        <div>
+          <div class="summary-total-label">Order total</div>
+          <div class="summary-total" id="sum-total">—</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="qty-hint" id="qty-hint">Minimum order: 100 letters</p>
+
+    <div class="includes-note">
+      <strong>What's included:</strong> Handwritten notes in real ink, mailing & postage (US addresses), and quality envelopes. After checkout you'll upload your mailing list — we handle everything from there.
+    </div>
+
+    <button type="submit" class="submit-btn" id="submit-btn">
+      <span class="btn-text">Proceed to Secure Checkout &rarr;</span>
+      <span class="btn-loading">Preparing checkout&hellip;</span>
+    </button>
+
+    <p class="trust-line">Powered by Stripe &mdash; your payment info never touches our servers</p>
+
+    <div class="api-error" id="api-error">Something went wrong creating your checkout. Please try again or email us directly.</div>
+
+  </form>
+</main>
+
+<script>
+  const tiers = Array.from(document.querySelectorAll('.tier')).map(el => ({
+    el,
+    min: +el.dataset.min,
+    max: +el.dataset.max,
+    rate: +el.dataset.rate,
+    name: el.dataset.name
+  }));
+
+  const qtyInput = document.getElementById('quantity');
+  const summary = document.getElementById('price-summary');
+  const sumTier = document.getElementById('sum-tier');
+  const sumRate = document.getElementById('sum-rate');
+  const sumTotal = document.getElementById('sum-total');
+  const qtyHint = document.getElementById('qty-hint');
+
+  let currentTier = null;
+
+  function getTier(qty) {
+    return tiers.find(t => qty >= t.min && qty <= t.max) || null;
+  }
+
+  function updatePricing() {
+    const qty = parseInt(qtyInput.value) || 0;
+    tiers.forEach(t => t.el.classList.remove('active'));
+    qtyHint.className = 'qty-hint';
+
+    if (!qty || qty < 1) {
+      summary.classList.add('hidden');
+      qtyHint.textContent = 'Minimum order: 100 letters';
+      currentTier = null;
+      return;
+    }
+    if (qty < 100) {
+      summary.classList.add('hidden');
+      qtyHint.textContent = 'Minimum order is 100 letters.';
+      qtyHint.className = 'qty-hint error';
+      currentTier = null;
+      return;
+    }
+
+    currentTier = getTier(qty);
+    if (currentTier) {
+      currentTier.el.classList.add('active');
+      summary.classList.remove('hidden');
+      sumTier.textContent = currentTier.name + ' tier';
+      sumRate.textContent = '$' + currentTier.rate.toFixed(2) + ' per letter';
+      const total = (qty * currentTier.rate).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      sumTotal.textContent = total;
+      qtyHint.textContent = '';
+    }
+  }
+
+  qtyInput.addEventListener('input', updatePricing);
+
+  // Validation helpers
+  function setError(fieldId, hasError) {
+    document.getElementById(fieldId).classList.toggle('has-error', hasError);
+  }
+
+  function validateEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function validateForm() {
+    let valid = true;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const brokerage = document.getElementById('brokerage').value.trim();
+    const qty = parseInt(qtyInput.value) || 0;
+
+    setError('field-name', !name);
+    setError('field-email', !validateEmail(email));
+    setError('field-phone', !phone);
+    setError('field-brokerage', !brokerage);
+
+    if (!name || !validateEmail(email) || !phone || !brokerage) valid = false;
+    if (qty < 100 || !currentTier) {
+      qtyHint.textContent = 'Please enter a valid quantity (minimum 100).';
+      qtyHint.className = 'qty-hint error';
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  // Stripe Payment Links — one per tier
+  const PAYMENT_LINKS = {
+    starter: 'https://buy.stripe.com/test_dRmeVe1s3dQ2aZsasZ0VO00',
+    growth:  'https://buy.stripe.com/test_5kQeVe6Mn5jw0kO1Wt0VO01',
+    pro:     'https://buy.stripe.com/test_4gM28s3AbfYa4B4gRn0VO02',
+    goldbar: 'https://buy.stripe.com/test_9B66oIb2D8vIebE1Wt0VO03',
+    allin:   'https://buy.stripe.com/test_cNi4gA4EfaDQ6Jcbx30VO04',
+  };
+
+  const TIER_KEYS = ['starter', 'growth', 'pro', 'goldbar', 'allin'];
+
+  // Form submit → Stripe Payment Link
+  document.getElementById('order-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('api-error').style.display = 'none';
+
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('submit-btn');
+    btn.classList.add('loading');
+
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const phone    = document.getElementById('phone').value.trim();
+    const brokerage = document.getElementById('brokerage').value.trim();
+    const qty      = parseInt(qtyInput.value);
+    const tierKey  = TIER_KEYS[tiers.indexOf(currentTier)];
+    const baseUrl  = PAYMENT_LINKS[tierKey];
+
+    // Save contact info so success page can include it in the mailing list form
+    sessionStorage.setItem('ps_order', JSON.stringify({ name, email, phone, brokerage, qty }));
+
+    // Build the Stripe Payment Link URL with quantity + email pre-filled
+    const url = `${baseUrl}?prefilled_quantity=${qty}&prefilled_email=${encodeURIComponent(email)}`;
+    window.location.href = url;
+  });
+</script>
+</body>
+</html>
