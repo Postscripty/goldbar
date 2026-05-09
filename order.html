@@ -562,19 +562,8 @@
     return valid;
   }
 
-  // Stripe Payment Links — one per tier
-  const PAYMENT_LINKS = {
-    starter: 'https://buy.stripe.com/test_dRmeVe1s3dQ2aZsasZ0VO00',
-    growth:  'https://buy.stripe.com/test_5kQeVe6Mn5jw0kO1Wt0VO01',
-    pro:     'https://buy.stripe.com/test_4gM28s3AbfYa4B4gRn0VO02',
-    goldbar: 'https://buy.stripe.com/test_9B66oIb2D8vIebE1Wt0VO03',
-    allin:   'https://buy.stripe.com/test_cNi4gA4EfaDQ6Jcbx30VO04',
-  };
-
-  const TIER_KEYS = ['starter', 'growth', 'pro', 'goldbar', 'allin'];
-
-  // Form submit → Stripe Payment Link
-  document.getElementById('order-form').addEventListener('submit', (e) => {
+  // Form submit → Netlify Function → Stripe Checkout
+  document.getElementById('order-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     document.getElementById('api-error').style.display = 'none';
 
@@ -583,20 +572,35 @@
     const btn = document.getElementById('submit-btn');
     btn.classList.add('loading');
 
-    const name     = document.getElementById('name').value.trim();
-    const email    = document.getElementById('email').value.trim();
-    const phone    = document.getElementById('phone').value.trim();
-    const brokerage = document.getElementById('brokerage').value.trim();
-    const qty      = parseInt(qtyInput.value);
-    const tierKey  = TIER_KEYS[tiers.indexOf(currentTier)];
-    const baseUrl  = PAYMENT_LINKS[tierKey];
+    const payload = {
+      name:      document.getElementById('name').value.trim(),
+      email:     document.getElementById('email').value.trim(),
+      phone:     document.getElementById('phone').value.trim(),
+      brokerage: document.getElementById('brokerage').value.trim(),
+      quantity:  parseInt(qtyInput.value),
+    };
 
-    // Save contact info so success page can include it in the mailing list form
-    sessionStorage.setItem('ps_order', JSON.stringify({ name, email, phone, brokerage, qty }));
+    sessionStorage.setItem('ps_order', JSON.stringify(payload));
 
-    // Build the Stripe Payment Link URL with quantity + email pre-filled
-    const url = `${baseUrl}?prefilled_quantity=${qty}&prefilled_email=${encodeURIComponent(email)}`;
-    window.location.href = url;
+    try {
+      const res = await fetch('/.netlify/functions/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'No URL returned');
+      }
+    } catch (err) {
+      console.error(err);
+      document.getElementById('api-error').style.display = 'block';
+      btn.classList.remove('loading');
+    }
   });
 </script>
 </body>
