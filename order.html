@@ -6,7 +6,7 @@
 <title>Place Your Order — Postscripty</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Yellowtail&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -46,14 +46,9 @@
     justify-content: center;
   }
 
-  .wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    color: var(--gold);
-    text-transform: uppercase;
-  }
+  .logo-lockup { display: flex; align-items: center; gap: 0.85rem; }
+  .logo-x { color: var(--text); font-size: 1.1rem; opacity: 0.7; }
+  .ps-nav { font-family: 'Yellowtail', cursive; color: #5B72F2; font-size: 2rem; line-height: 1; }
 
   /* Page layout */
   main {
@@ -373,7 +368,11 @@
 <body>
 
 <header>
-  <div class="wordmark">Postscripty</div>
+  <div class="logo-lockup">
+    <img src="/goldbar-logo.png" alt="Goldbar" style="height:34px;width:auto;" />
+    <span class="logo-x">×</span>
+    <span class="ps-nav">Postscripty</span>
+  </div>
 </header>
 
 <main>
