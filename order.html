@@ -422,6 +422,25 @@
     <hr class="divider" />
 
     <!-- Quantity + Pricing -->
+    <div class="qty-row">
+      <div class="qty-field field" id="field-quantity">
+        <label for="quantity">How many letters do you need?</label>
+        <input type="number" id="quantity" name="quantity" placeholder="250" min="100" step="1" />
+      </div>
+      <div class="price-summary hidden" id="price-summary">
+        <div>
+          <div class="summary-tier" id="sum-tier">—</div>
+          <div class="summary-rate" id="sum-rate">— per letter</div>
+        </div>
+        <div>
+          <div class="summary-total-label">Order total</div>
+          <div class="summary-total" id="sum-total">—</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="qty-hint" id="qty-hint">Minimum order: 100 letters</p>
+
     <div class="section-label">Volume Pricing</div>
 
     <div class="tiers" id="tier-display">
@@ -456,25 +475,6 @@
         <div class="tier-unit">per letter</div>
       </div>
     </div>
-
-    <div class="qty-row">
-      <div class="qty-field field" id="field-quantity">
-        <label for="quantity">How many letters do you need?</label>
-        <input type="number" id="quantity" name="quantity" placeholder="250" min="100" step="1" />
-      </div>
-      <div class="price-summary hidden" id="price-summary">
-        <div>
-          <div class="summary-tier" id="sum-tier">—</div>
-          <div class="summary-rate" id="sum-rate">— per letter</div>
-        </div>
-        <div>
-          <div class="summary-total-label">Order total</div>
-          <div class="summary-total" id="sum-total">—</div>
-        </div>
-      </div>
-    </div>
-
-    <p class="qty-hint" id="qty-hint">Minimum order: 100 letters</p>
 
     <div class="includes-note">
       <strong>What's included:</strong> Handwritten notes with a blue ink Bic pen, mailing & postage (US addresses), and quality envelopes. After checkout you'll upload your mailing list — we handle everything from there.
