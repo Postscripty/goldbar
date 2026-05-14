@@ -226,6 +226,12 @@
 
   .qty-field { flex: 0 0 auto; }
 
+  .qty-field label {
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+  }
+
   .qty-field input {
     width: 140px;
     font-size: 1.5rem;
@@ -233,6 +239,8 @@
     text-align: center;
     padding: 0.6rem 1rem;
     letter-spacing: 0.05em;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(196,160,80,0.15);
   }
 
   .price-summary {
@@ -402,6 +410,14 @@
       </div>
     </div>
 
+    <div class="field-group single">
+      <div class="field" id="field-return-address">
+        <label for="return-address">Return address (written on envelopes)</label>
+        <input type="text" id="return-address" name="return-address" placeholder="123 Main St, Las Vegas, NV 89101" autocomplete="street-address" />
+        <span class="field-error">Required</span>
+      </div>
+    </div>
+
     <hr class="divider" />
 
     <!-- Quantity + Pricing -->
@@ -545,14 +561,16 @@
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const brokerage = document.getElementById('brokerage').value.trim();
+    const returnAddress = document.getElementById('return-address').value.trim();
     const qty = parseInt(qtyInput.value) || 0;
 
     setError('field-name', !name);
     setError('field-email', !validateEmail(email));
     setError('field-phone', !phone);
     setError('field-brokerage', !brokerage);
+    setError('field-return-address', !returnAddress);
 
-    if (!name || !validateEmail(email) || !phone || !brokerage) valid = false;
+    if (!name || !validateEmail(email) || !phone || !brokerage || !returnAddress) valid = false;
     if (qty < 100 || !currentTier) {
       qtyHint.textContent = 'Please enter a valid quantity (minimum 100).';
       qtyHint.className = 'qty-hint error';
@@ -573,11 +591,12 @@
     btn.classList.add('loading');
 
     const payload = {
-      name:      document.getElementById('name').value.trim(),
-      email:     document.getElementById('email').value.trim(),
-      phone:     document.getElementById('phone').value.trim(),
-      brokerage: document.getElementById('brokerage').value.trim(),
-      quantity:  parseInt(qtyInput.value),
+      name:          document.getElementById('name').value.trim(),
+      email:         document.getElementById('email').value.trim(),
+      phone:         document.getElementById('phone').value.trim(),
+      brokerage:     document.getElementById('brokerage').value.trim(),
+      returnAddress: document.getElementById('return-address').value.trim(),
+      quantity:      parseInt(qtyInput.value),
     };
 
     sessionStorage.setItem('ps_order', JSON.stringify(payload));
