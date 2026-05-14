@@ -128,7 +128,7 @@
   input[type="tel"],
   input[type="number"] {
     background: var(--surface);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--gold);
     border-radius: 4px;
     color: var(--text);
     font-family: 'Jost', sans-serif;
@@ -227,20 +227,21 @@
   .qty-field { flex: 0 0 auto; }
 
   .qty-field label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--gold);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
   }
 
   .qty-field input {
-    width: 140px;
-    font-size: 1.5rem;
+    width: 220px;
+    font-size: 2rem;
     font-family: 'Cormorant Garamond', serif;
     text-align: center;
-    padding: 0.6rem 1rem;
+    padding: 0.75rem 1rem;
     letter-spacing: 0.05em;
     border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(196,160,80,0.15);
+    box-shadow: 0 0 0 4px rgba(196,160,80,0.18);
   }
 
   .price-summary {
@@ -458,7 +459,7 @@
 
     <div class="qty-row">
       <div class="qty-field field" id="field-quantity">
-        <label for="quantity">Quantity</label>
+        <label for="quantity">How many letters do you need?</label>
         <input type="number" id="quantity" name="quantity" placeholder="250" min="100" step="1" />
       </div>
       <div class="price-summary hidden" id="price-summary">
