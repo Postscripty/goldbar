@@ -160,10 +160,11 @@
   /* Upload section */
   .upload-letter {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 2px solid var(--gold);
     border-radius: 6px;
     padding: 2rem;
     text-align: left;
+    box-shadow: 0 0 24px rgba(196,146,42,0.15);
   }
 
   .upload-label {
@@ -172,9 +173,20 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     display: block;
   }
+
+  .upload-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .upload-heading em { font-style: italic; color: var(--gold); }
 
   .upload-desc {
     font-size: 0.85rem;
@@ -328,7 +340,8 @@
 
   <!-- Mailing list upload via Netlify Forms -->
   <div class="upload-letter" id="upload-section">
-    <span class="upload-label">Upload your mailing list</span>
+    <span class="upload-label">Action required</span>
+    <div class="upload-heading">Upload your <em>mailing list.</em></div>
     <p class="upload-desc">
       <strong>Accepted formats:</strong> CSV or Excel (.xlsx). Include columns for first name, last name, and full mailing address. Not sure about the format? <strong>Reply to your Stripe receipt</strong> and we'll send you a template.
     </p>
